@@ -21,10 +21,12 @@ class RoboticaMovel : public rclcpp::Node {
  private:
 
   void setup();
+  void timer_callback();
 
  private:
 
   rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr publisher_;
+  rclcpp::TimerBase::SharedPtr timer_;
 };
 
 
