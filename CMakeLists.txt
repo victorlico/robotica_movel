@@ -8,6 +8,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(topic_tools REQUIRED)
 
 set(TARGET_NAME robotica_movel)
 

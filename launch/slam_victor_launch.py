@@ -7,6 +7,12 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     
+    turtlebot3_gazebo_path = os.path.join(
+                    get_package_share_directory('turtlebot3_gazebo'), 
+                    'worlds', 
+                    'turtlebot3_world.world'
+    )
+
     rviz_config = os.path.join(
                     get_package_share_directory('andino_slam'), 
                     'rviz', 
@@ -29,7 +35,7 @@ def generate_launch_description():
     andino_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(andino_gz_launch_path),
         launch_arguments={'rviz': 'true', 
-                            'world': 'src/turtlebot3_simulations/turtlebot3_gazebo/worlds/turtlebot3_world.world',
+                            'world': turtlebot3_gazebo_path,
                             'initial_pose_x': '-2.00',
                             'initial_pose_y': '-0.5',
                             'initial_pose_z': '0.01',
@@ -56,10 +62,25 @@ def generate_launch_description():
         output='screen'
     )
 
+    key_parser = Node(
+        package='turtle_controller',
+        executable='keyboard_parser',
+        name='keyboard_parser',
+        output='screen'
+    )
+
+    remaps = Node(
+            package='topic_tools', 
+            executable='relay',
+            arguments=['/camera/image_raw', '/image_raw'],
+            output='screen',
+            )
+
     # Retorna o LaunchDescription com os três componentes
     return LaunchDescription([
         andino_launch,
         controller_server_node,
         keyboard_node,
-        slam_launch
+        slam_launch,
+        remaps
     ])

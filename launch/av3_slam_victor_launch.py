@@ -7,6 +7,12 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     
+    turtlebot3_gazebo_path = os.path.join(
+                    get_package_share_directory('turtlebot3_gazebo'), 
+                    'worlds', 
+                    'turtlebot3_house.world'
+    )
+
     rviz_config = os.path.join(
                     get_package_share_directory('andino_slam'), 
                     'rviz', 
@@ -28,7 +34,7 @@ def generate_launch_description():
     andino_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(andino_gz_launch_path),
         launch_arguments={'rviz': 'true', 
-                            'world': 'src/turtlebot3_simulations/turtlebot3_gazebo/worlds/turtlebot3_house.world',
+                            'world': turtlebot3_gazebo_path,
                             'initial_pose_x': '-4.50',
                             'initial_pose_y': '0.5',
                             'initial_pose_z': '0.01',
@@ -46,10 +52,18 @@ def generate_launch_description():
             name='teleop_twist_keyboard_node',
             output='screen',
             prefix = 'xterm -e',
-         )
+            )
+
+    remaps = Node(
+            package='topic_tools', 
+            executable='relay',
+            arguments=['/camera/image_raw', '/image_raw'],
+            output='screen',
+            )
 
     return LaunchDescription([
         andino_launch,
         teleop_node,
-        slam_launch
+        slam_launch,
+        remaps
     ])
