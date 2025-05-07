@@ -82,5 +82,6 @@ def generate_launch_description():
         controller_server_node,
         keyboard_node,
         slam_launch,
+        key_parser,
         remaps
     ])
