@@ -50,6 +50,5 @@ def generate_launch_description():
         andino_launch,
         controller_server_node,
         keyboard_node,
-        controler_action,
         key_parser
     ])
