@@ -33,7 +33,8 @@ def generate_launch_description():
 
     andino_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(andino_gz_launch_path),
-        launch_arguments={'rviz': 'true', 
+        launch_arguments={'rviz': 'true',
+                            'use_sim_time': 'true',
                             'world': turtlebot3_gazebo_path,
                             'initial_pose_x': '-4.50',
                             'initial_pose_y': '0.5',

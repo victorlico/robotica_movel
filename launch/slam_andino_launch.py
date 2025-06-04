@@ -34,7 +34,8 @@ def generate_launch_description():
     # IncludeLaunchDescription para o launch file 'andino_one_robot.launch.py' com parâmetro rviz false
     andino_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(andino_gz_launch_path),
-        launch_arguments={'rviz': 'true', 
+        launch_arguments={'rviz': 'true',
+                            'use_sim_time': 'true',
                             'world': turtlebot3_gazebo_path,
                             'initial_pose_x': '-2.00',
                             'initial_pose_y': '-0.5',
@@ -55,11 +56,12 @@ def generate_launch_description():
     )
 
     # Node do pacote 'keyboard' com nome 'keyboard'
-    keyboard_node = Node(
-        package='keyboard',
-        executable='keyboard',
-        name='keyboard',
-        output='screen'
+    teleop_node = Node(
+        package='teleop_twist_keyboard',
+        executable='teleop_twist_keyboard',
+        name='teleop_twist_keyboard_node',
+        output='screen',
+        prefix = 'xterm -e',
     )
 
     key_parser = Node(
@@ -80,7 +82,7 @@ def generate_launch_description():
     return LaunchDescription([
         andino_launch,
         controller_server_node,
-        keyboard_node,
+        teleop_node,
         slam_launch,
         key_parser,
         remaps
